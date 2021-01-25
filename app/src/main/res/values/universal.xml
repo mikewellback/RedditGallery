@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">RedditGallery</string>
+    <string name="url" translatable="false">https://www.reddit.com/r/%1$s/top.json</string>
+</resources>
