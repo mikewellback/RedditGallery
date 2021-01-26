@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hint_search">Cosa vorresti vedere oggi?</string>
+    <string name="title_search">Ricerca</string>
+    <string name="title_favorites">Preferiti</string>
 </resources>

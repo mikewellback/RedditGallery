@@ -1,4 +1,4 @@
-package com.mikewellback.redditgallery
+package com.mikewellback.redditgallery.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.mikewellback.redditgallery.R
 import com.mikewellback.redditgallery.api.RedditChildData
 
 class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
