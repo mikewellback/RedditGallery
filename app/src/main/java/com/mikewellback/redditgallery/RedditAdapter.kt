@@ -4,26 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikewellback.redditgallery.api.RedditChildData
-import java.net.URLDecoder
-import java.net.URLEncoder
-import java.nio.charset.Charset
 
 class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
-    class RedditVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imageView: ImageView
 
-        init {
-            imageView = itemView.findViewById(R.id.imageView)
-        }
+    class RedditVH(itemView: View): RecyclerView.ViewHolder(itemView) {
+        var imageView: ImageView = itemView.findViewById(R.id.imageView)
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RedditVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RedditVH {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_post, parent, false)
 
@@ -31,10 +23,12 @@ class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
     }
 
     override fun onBindViewHolder(holder: RedditVH, position: Int) {
+        val url = HtmlCompat.fromHtml(
+            elements[position].preview!!.images.first().source.url,
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+        ).toString()
         Glide.with(holder.imageView)
-            .load(elements[position].preview!!.images.first().source.url
-                .replace("&amp;", "&", true)
-            )
+            .load(url)
             .into(holder.imageView)
     }
 
