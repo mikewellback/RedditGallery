@@ -1,6 +1,7 @@
 package com.mikewellback.redditgallery.ui.main.search
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -8,12 +9,14 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.gson.Gson
+import com.mikewellback.redditgallery.R
 import com.mikewellback.redditgallery.databinding.FragmentSearchBinding
-import com.mikewellback.redditgallery.ui.detail.DetailActivity
 import com.mikewellback.redditgallery.ui.adapters.RedditAdapter
+import com.mikewellback.redditgallery.ui.detail.DetailActivity
 
 class SearchFragment: Fragment() {
 
@@ -58,6 +61,8 @@ class SearchFragment: Fragment() {
         searchViewModel.posts.observe(viewLifecycleOwner, {
             redditAdapter.elements = it
             binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            binding.statusImg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            binding.statusTxt.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         })
 
         searchViewModel.favorites.observe(viewLifecycleOwner, {
@@ -65,21 +70,63 @@ class SearchFragment: Fragment() {
         })
 
         searchViewModel.status.observe(viewLifecycleOwner, {
-            binding.progressBar.visibility = if (it == SearchStatus.LOADING) View.VISIBLE else View.GONE
+            when (it) {
+                SearchStatus.OFFLINE -> {
+                    binding.statusTxt.visibility = View.VISIBLE
+                    binding.statusImg.visibility = View.VISIBLE
+                    binding.statusTxt.setText(R.string.status_offline)
+                    binding.statusImg.setImageResource(R.drawable.ic_twotone_signal_cellular_connected_no_internet_0_bar_48)
+                }
+                SearchStatus.ERROR -> {
+                    binding.statusTxt.visibility = View.VISIBLE
+                    binding.statusImg.visibility = View.VISIBLE
+                    binding.statusTxt.setText(R.string.status_error)
+                    binding.statusImg.setImageResource(R.drawable.ic_twotone_stop_screen_share_48)
+                }
+                SearchStatus.DONE -> {
+                    if (binding.searchTxt.text?.isBlank() == true) {
+                        binding.statusTxt.visibility = View.VISIBLE
+                        binding.statusImg.visibility = View.VISIBLE
+                        binding.statusTxt.setText(R.string.status_empty)
+                        binding.statusImg.setImageResource(R.drawable.ic_twotone_tag_faces_48)
+                    } else {
+                        binding.statusTxt.setText(R.string.status_nores)
+                        binding.statusImg.setImageResource(R.drawable.ic_twotone_image_search_48)
+                        binding.statusTxt.visibility = View.GONE
+                        binding.statusImg.visibility = View.GONE
+                    }
+                }
+                else -> {
+                    binding.statusTxt.visibility = View.GONE
+                    binding.statusImg.visibility = View.GONE
+                }
+            }
+            binding.progressBar.visibility =
+                if (it == SearchStatus.LOADING) View.VISIBLE else View.GONE
         })
 
-        binding.editTextTextPersonName.setText(searchViewModel.topic.value)
+        binding.searchTxt.setText(searchViewModel.topic.value)
 
-        binding.editTextTextPersonName.addTextChangedListener(object: TextWatcher {
+        binding.searchTxt.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchViewModel.fetchTopPosts("$p0")
+                if ("$p0".trim().length != 1) {
+                    searchViewModel.fetchTopPosts("$p0")
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
 
         })
+
+        binding.searchTxt.onFocusChangeListener = View.OnFocusChangeListener { p0, p1 ->
+            if (p0 != null && !p1) {
+                (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.also {
+                    it.hideSoftInputFromWindow(p0.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
+                }
+            }
+        }
 
         return binding.root
     }

@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.collect
 
 class FavoritesViewModel: ViewModel() {
 
-    private val _favorites = MutableLiveData<List<RedditChildData>>().apply {
-        value = listOf()
+    private val _favorites = MutableLiveData<List<RedditChildData>?>().apply {
+        value = null
     }
-    val favorites: LiveData<List<RedditChildData>> = _favorites
+    val favorites: LiveData<List<RedditChildData>?> = _favorites
 
     fun fetchDatabaseData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {

@@ -1,7 +1,9 @@
 package com.mikewellback.redditgallery.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mikewellback.redditgallery.models.RedditChildData
@@ -22,6 +24,10 @@ class DetailActivity: AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        binding.closeImg.setOnClickListener {
+            finish()
+        }
+
         if (intent.extras != null &&
             intent.hasExtra("position") && intent.hasExtra("elements")) {
             val position = intent.extras!!.get("position") as Int
@@ -31,9 +37,43 @@ class DetailActivity: AppCompatActivity() {
 
             galleryPagerAdapter = GalleryPagerAdapter(elements) { zoomed ->
                 binding.viewPager.swipeable = !zoomed
+                if (zoomed) {
+                    binding.backgroundLay.visibility = View.GONE
+                    binding.userTxt.visibility = View.GONE
+                    binding.descriptionTxt.visibility = View.GONE
+                } else {
+                    binding.backgroundLay.visibility = View.VISIBLE
+                    binding.userTxt.visibility = View.VISIBLE
+                    binding.descriptionTxt.visibility = View.VISIBLE
+                }
             }
             binding.viewPager.adapter = galleryPagerAdapter
+            val onPageChangeListener = object: ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                override fun onPageSelected(position: Int) {
+                    binding.backgroundLay.animate().alpha(0.6f)
+                    binding.userTxt.animate().alpha(1f)
+                    binding.descriptionTxt.animate().alpha(1f)
+                    binding.userTxt.text = "/u/${elements[position].author}"
+                    binding.descriptionTxt.text = elements[position].title
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                        binding.backgroundLay.animate().alpha(0f)
+                        binding.userTxt.animate().alpha(0f)
+                        binding.descriptionTxt.animate().alpha(0f)
+                    } else {
+                        binding.backgroundLay.animate().alpha(0.6f)
+                        binding.userTxt.animate().alpha(1f)
+                        binding.descriptionTxt.animate().alpha(1f)
+                    }
+                }
+            }
+            binding.viewPager.addOnPageChangeListener(onPageChangeListener)
             binding.viewPager.currentItem = position
+            onPageChangeListener.onPageSelected(position)
         }
     }
 

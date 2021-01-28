@@ -55,9 +55,13 @@ class FavoritesFragment: Fragment() {
         }
 
         favoritesViewModel.favorites.observe(viewLifecycleOwner, {
-            redditAdapter.favorites = it.map { it.name }
-            redditAdapter.elements = it
-            binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            it?.also {
+                redditAdapter.favorites = it.map { it.name }
+                redditAdapter.elements = it
+                binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                binding.statusTxt.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                binding.statusImg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            }
         })
 
         return binding.root

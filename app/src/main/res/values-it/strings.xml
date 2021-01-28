@@ -4,4 +4,11 @@
     <string name="title_search">Ricerca</string>
     <string name="title_favorites">Preferiti</string>
     <string name="hint_favorites_button">Tasto preferiti</string>
+    <string name="hint_close">Tasto chiudi</string>
+    <string name="hint_status">Informazioni sullo stato</string>
+    <string name="status_offline">Sei offline, connettiti a una rete per effettuare ricerche</string>
+    <string name="status_error">Qualcosa è andato storto, prova ancora</string>
+    <string name="status_empty">Non c\'è ancora nulla qui, ma basterà avviare una ricerca per rimediare</string>
+    <string name="status_nores">La ricerca non ha prodotto risultati, continua a digitare</string>
+    <string name="status_nofav">Clicca il cuore per aggiungere dei preferiti, inizia dalla pagina di ricerca</string>
 </resources>

@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.UnknownHostException
 
 class SearchViewModel: ViewModel() {
 
@@ -64,7 +65,11 @@ class SearchViewModel: ViewModel() {
 
             override fun onFailure(call: Call<RedditTopPosts>, t: Throwable) {
                 if (callId == _callId) {
-                    _status.value = SearchStatus.ERROR
+                    if (t is UnknownHostException) {
+                        _status.value = SearchStatus.OFFLINE
+                    } else {
+                        _status.value = SearchStatus.ERROR
+                    }
                     _posts.value = listOf()
                 }
             }

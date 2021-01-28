@@ -4,4 +4,11 @@
     <string name="title_search">Search</string>
     <string name="title_favorites">Favorites</string>
     <string name="hint_favorites_button">Favorites button</string>
+    <string name="hint_close">Close button</string>
+    <string name="hint_status">Status information</string>
+    <string name="status_offline">You are offline, connect to a network and you can search again</string>
+    <string name="status_error">Something gone wrong, try again</string>
+    <string name="status_empty">It\'s empty here, feel free to search for something</string>
+    <string name="status_nores">Your query didn\'t match any result, yet</string>
+    <string name="status_nofav">Tap the heart icon to add some favorite items here, start by searching for something</string>
 </resources>
