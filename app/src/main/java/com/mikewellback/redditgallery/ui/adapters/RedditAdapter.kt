@@ -31,9 +31,15 @@ class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
         Glide.with(holder.imageView)
             .load(url)
             .into(holder.imageView)
+        holder.imageView.transitionName = "image_$position"
+        holder.imageView.setOnClickListener {
+            onItemClickListener(it, position)
+        }
     }
 
     override fun getItemCount(): Int = elements.size
+
+    var onItemClickListener: (view: View, position: Int) -> Unit = { _, _ -> }
 
     var elements = listOf<RedditChildData>()
     set(value) {

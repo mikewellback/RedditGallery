@@ -1,4 +1,4 @@
-package com.mikewellback.redditgallery.ui.favorites
+package com.mikewellback.redditgallery.ui.main.favorites
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

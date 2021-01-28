@@ -1,4 +1,4 @@
-package com.mikewellback.redditgallery.ui.favorites
+package com.mikewellback.redditgallery.ui.main.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/search_nav"
-        android:name="com.mikewellback.redditgallery.ui.search.SearchFragment"
+        android:name="com.mikewellback.redditgallery.ui.main.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/favorites_nav"
-        android:name="com.mikewellback.redditgallery.ui.favorites.FavoritesFragment"
+        android:name="com.mikewellback.redditgallery.ui.main.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 

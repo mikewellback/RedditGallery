@@ -1,4 +1,4 @@
-package com.mikewellback.redditgallery.ui
+package com.mikewellback.redditgallery.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

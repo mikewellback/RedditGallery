@@ -1,4 +1,4 @@
-package com.mikewellback.redditgallery.ui.search
+package com.mikewellback.redditgallery.ui.main.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,6 +17,11 @@ class SearchViewModel: ViewModel() {
     }
     val status: LiveData<SearchStatus> = _status
 
+    private val _topic = MutableLiveData<String>().apply {
+        value = ""
+    }
+    val topic: LiveData<String> = _topic
+
     private val _posts = MutableLiveData<List<RedditChildData>>().apply {
         value = listOf()
     }
@@ -27,6 +32,7 @@ class SearchViewModel: ViewModel() {
 
     fun fetchTopPosts(topic: String) {
         val callId = System.currentTimeMillis()
+        _topic.value = topic
         _callId = callId
         _posts.value = listOf()
         if (topic.isBlank()) {
