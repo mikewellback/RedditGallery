@@ -3,4 +3,5 @@
     <string name="hint_search">Cosa vorresti vedere oggi?</string>
     <string name="title_search">Ricerca</string>
     <string name="title_favorites">Preferiti</string>
+    <string name="hint_favorites_button">Tasto preferiti</string>
 </resources>

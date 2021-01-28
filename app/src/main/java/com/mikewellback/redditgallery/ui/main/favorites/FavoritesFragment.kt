@@ -31,6 +31,7 @@ class FavoritesFragment: Fragment() {
         }
 
         binding.recyclerView.adapter = redditAdapter
+        redditAdapter.showSub = true
         redditAdapter.onItemClickListener = { view, position ->
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra("elements", Gson().toJson(redditAdapter.elements))
