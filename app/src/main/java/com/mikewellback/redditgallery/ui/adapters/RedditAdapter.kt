@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikewellback.redditgallery.R
-import com.mikewellback.redditgallery.api.RedditChildData
+import com.mikewellback.redditgallery.models.RedditChildData
 
 class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
 
     class RedditVH(itemView: View): RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
+        var favorite_img: ImageView = itemView.findViewById(R.id.favorite_img)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RedditVH {
@@ -24,10 +24,8 @@ class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
     }
 
     override fun onBindViewHolder(holder: RedditVH, position: Int) {
-        val url = HtmlCompat.fromHtml(
-            elements[position].preview!!.images.first().source.url,
-            HtmlCompat.FROM_HTML_MODE_COMPACT
-        ).toString()
+        val elem = elements[position]
+        val url = elem.preview!!.escapedUrl()
         Glide.with(holder.imageView)
             .load(url)
             .into(holder.imageView)
@@ -35,13 +33,30 @@ class RedditAdapter: RecyclerView.Adapter<RedditAdapter.RedditVH>() {
         holder.imageView.setOnClickListener {
             onItemClickListener(it, position)
         }
+        val isFavorite = elem.name in favorites
+        holder.favorite_img.setImageResource(
+            if (isFavorite)
+                R.drawable.ic_round_favorite_36
+            else
+                R.drawable.ic_round_favorite_border_36
+        )
+        holder.favorite_img.setOnClickListener {
+            onFavoriteClickListener(it as ImageView, position, elem, isFavorite)
+        }
     }
 
     override fun getItemCount(): Int = elements.size
 
     var onItemClickListener: (view: View, position: Int) -> Unit = { _, _ -> }
+    var onFavoriteClickListener: (imageView: ImageView, position: Int, element: RedditChildData, isFavorite: Boolean) -> Unit = { _, _, _, _ -> }
 
     var elements = listOf<RedditChildData>()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
+
+    var favorites = listOf<String>()
     set(value) {
         field = value
         notifyDataSetChanged()

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.mikewellback.redditgallery.api.RedditChildData
+import com.mikewellback.redditgallery.models.RedditChildData
 import com.mikewellback.redditgallery.databinding.ActivityDetailBinding
 import com.mikewellback.redditgallery.ui.adapters.GalleryPagerAdapter
 
@@ -13,6 +13,8 @@ class DetailActivity: AppCompatActivity() {
     private val binding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(layoutInflater)
     }
+
+    var galleryPagerAdapter: GalleryPagerAdapter? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +29,10 @@ class DetailActivity: AppCompatActivity() {
                 intent.extras!!.get("elements") as String,
                 object: TypeToken<List<RedditChildData?>?>() {}.type)
 
-            binding.viewPager.adapter = GalleryPagerAdapter(elements) { zoomed ->
+            galleryPagerAdapter = GalleryPagerAdapter(elements) { zoomed ->
                 binding.viewPager.swipeable = !zoomed
             }
+            binding.viewPager.adapter = galleryPagerAdapter
             binding.viewPager.currentItem = position
         }
     }

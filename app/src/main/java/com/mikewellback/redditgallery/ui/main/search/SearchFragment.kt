@@ -28,6 +28,10 @@ class SearchFragment: Fragment() {
     ): View {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
 
+        context?.also {
+            searchViewModel.fetchDatabaseData(it)
+        }
+
         binding.recyclerView.adapter = redditAdapter
         redditAdapter.onItemClickListener = { view, position ->
             val intent = Intent(context, DetailActivity::class.java)
@@ -37,14 +41,27 @@ class SearchFragment: Fragment() {
                 .makeSceneTransitionAnimation(
                     activity,
                     view,
-                    "image"
+                    "image_$position"
                 )
             startActivity(intent/*, options.toBundle()*/)
+        }
+        redditAdapter.onFavoriteClickListener = { imageView, position, element, isFavorite ->
+            context?.also {
+                if (isFavorite) {
+                    searchViewModel.removeFavoriteItem(it, element)
+                } else {
+                    searchViewModel.addFavoriteItem(it, element)
+                }
+            }
         }
 
         searchViewModel.posts.observe(viewLifecycleOwner, {
             redditAdapter.elements = it
             binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+        })
+
+        searchViewModel.favorites.observe(viewLifecycleOwner, {
+            redditAdapter.favorites = it.map { it.name }
         })
 
         searchViewModel.status.observe(viewLifecycleOwner, {

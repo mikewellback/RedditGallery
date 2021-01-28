@@ -3,10 +3,9 @@ package com.mikewellback.redditgallery.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.text.HtmlCompat
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
-import com.mikewellback.redditgallery.api.RedditChildData
+import com.mikewellback.redditgallery.models.RedditChildData
 import uk.co.senab.photoview.PhotoView
 
 class GalleryPagerAdapter(
@@ -21,12 +20,9 @@ class GalleryPagerAdapter(
         photoView.setOnMatrixChangeListener {
             onZoomChange(it.width() > container.width)
         }
-        photoView.transitionName = "image"
+        photoView.transitionName = "image_$position"
 
-        val url = HtmlCompat.fromHtml(
-            elements[position].preview!!.images.first().source.url,
-            HtmlCompat.FROM_HTML_MODE_COMPACT
-        ).toString()
+        val url = elements[position].preview!!.escapedUrl()
         Glide.with(photoView.context)
             .load(url)
             .into(photoView)
@@ -44,4 +40,5 @@ class GalleryPagerAdapter(
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
+
 }
