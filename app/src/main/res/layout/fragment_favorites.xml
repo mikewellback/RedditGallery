@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/posts_lst"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingTop="8dp"
@@ -30,9 +30,9 @@
         android:src="@drawable/ic_twotone_tag_faces_48"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toTopOf="@+id/status_txt"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/posts_lst"
+        app:layout_constraintStart_toStartOf="@+id/posts_lst"
+        app:layout_constraintTop_toTopOf="@+id/posts_lst"
         android:contentDescription="@string/hint_status" />
 
     <TextView
@@ -47,9 +47,9 @@
         android:textAlignment="center"
         android:text="@string/status_nofav"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/posts_lst"
+        app:layout_constraintEnd_toEndOf="@+id/posts_lst"
+        app:layout_constraintStart_toStartOf="@+id/posts_lst"
         app:layout_constraintTop_toBottomOf="@+id/status_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

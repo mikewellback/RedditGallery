@@ -22,7 +22,7 @@
         android:autofillHints="" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/posts_lst"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingTop="8dp"
@@ -38,15 +38,15 @@
         tools:itemCount="8" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar"
         android:visibility="gone"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView" />
+        app:layout_constraintBottom_toBottomOf="@+id/posts_lst"
+        app:layout_constraintEnd_toEndOf="@+id/posts_lst"
+        app:layout_constraintStart_toStartOf="@+id/posts_lst"
+        app:layout_constraintTop_toTopOf="@+id/posts_lst" />
 
     <ImageView
         android:id="@+id/status_img"
@@ -55,9 +55,9 @@
         android:layout_height="96dp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toTopOf="@+id/status_txt"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/posts_lst"
+        app:layout_constraintStart_toStartOf="@+id/posts_lst"
+        app:layout_constraintTop_toTopOf="@+id/posts_lst"
         android:contentDescription="@string/hint_status" />
 
     <TextView
@@ -71,9 +71,9 @@
         android:textSize="18sp"
         android:textAlignment="center"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/posts_lst"
+        app:layout_constraintEnd_toEndOf="@+id/posts_lst"
+        app:layout_constraintStart_toStartOf="@+id/posts_lst"
         app:layout_constraintTop_toBottomOf="@+id/status_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ class FavoritesFragment: Fragment() {
             favoritesViewModel.fetchDatabaseData(it)
         }
 
-        binding.recyclerView.adapter = redditAdapter
+        binding.postsLst.adapter = redditAdapter
         redditAdapter.showSub = true
         redditAdapter.onItemClickListener = { view, position ->
             val intent = Intent(context, DetailActivity::class.java)
@@ -58,7 +58,7 @@ class FavoritesFragment: Fragment() {
             it?.also {
                 redditAdapter.favorites = it.map { it.name }
                 redditAdapter.elements = it
-                binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                binding.postsLst.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 binding.statusTxt.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
                 binding.statusImg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             }

@@ -8,7 +8,7 @@
     tools:context=".ui.detail.DetailActivity">
 
     <com.mikewellback.redditgallery.ui.widgets.SuspendableViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/container_pag"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
         android:id="@+id/background_lay"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/white"
+        android:background="?android:attr/windowBackground"
         android:alpha="0.6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

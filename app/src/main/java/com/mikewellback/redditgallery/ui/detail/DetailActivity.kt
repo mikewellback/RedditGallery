@@ -36,7 +36,7 @@ class DetailActivity: AppCompatActivity() {
                 object: TypeToken<List<RedditChildData?>?>() {}.type)
 
             galleryPagerAdapter = GalleryPagerAdapter(elements) { zoomed ->
-                binding.viewPager.swipeable = !zoomed
+                binding.containerPag.swipeable = !zoomed
                 if (zoomed) {
                     binding.backgroundLay.visibility = View.GONE
                     binding.userTxt.visibility = View.GONE
@@ -47,7 +47,7 @@ class DetailActivity: AppCompatActivity() {
                     binding.descriptionTxt.visibility = View.VISIBLE
                 }
             }
-            binding.viewPager.adapter = galleryPagerAdapter
+            binding.containerPag.adapter = galleryPagerAdapter
             val onPageChangeListener = object: ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -71,8 +71,8 @@ class DetailActivity: AppCompatActivity() {
                     }
                 }
             }
-            binding.viewPager.addOnPageChangeListener(onPageChangeListener)
-            binding.viewPager.currentItem = position
+            binding.containerPag.addOnPageChangeListener(onPageChangeListener)
+            binding.containerPag.currentItem = position
             onPageChangeListener.onPageSelected(position)
         }
     }

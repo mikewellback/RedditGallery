@@ -35,7 +35,7 @@ class SearchFragment: Fragment() {
             searchViewModel.fetchDatabaseData(it)
         }
 
-        binding.recyclerView.adapter = redditAdapter
+        binding.postsLst.adapter = redditAdapter
         redditAdapter.onItemClickListener = { view, position ->
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra("elements", Gson().toJson(redditAdapter.elements))
@@ -60,7 +60,7 @@ class SearchFragment: Fragment() {
 
         searchViewModel.posts.observe(viewLifecycleOwner, {
             redditAdapter.elements = it
-            binding.recyclerView.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            binding.postsLst.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
             binding.statusImg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             binding.statusTxt.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         })

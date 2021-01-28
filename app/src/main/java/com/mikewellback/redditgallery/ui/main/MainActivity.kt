@@ -24,9 +24,9 @@ class MainActivity: AppCompatActivity() {
         val abc = AppBarConfiguration(setOf(R.id.search_nav, R.id.favorites_nav))
         supportFragmentManager.findFragmentById(R.id.host_fra)?.findNavController()?.also { navController ->
             setupActionBarWithNavController(navController, abc)
-            binding.navView.setupWithNavController(navController)
+            binding.navigationBar.setupWithNavController(navController)
             if (!NetworkUtils.hasConnection(this)) {
-                binding.navView.selectedItemId = R.id.favorites_nav
+                binding.navigationBar.selectedItemId = R.id.favorites_nav
             }
         }
     }
