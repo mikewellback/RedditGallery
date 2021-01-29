@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesDao {
-    @Query("SELECT * FROM favorites")
+    @Query("SELECT * FROM favorites ORDER BY created")
     fun getAll(): Flow<List<RedditChildData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

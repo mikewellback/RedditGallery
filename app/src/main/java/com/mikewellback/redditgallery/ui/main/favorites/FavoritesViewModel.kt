@@ -34,6 +34,7 @@ class FavoritesViewModel: ViewModel() {
     }
 
     fun addFavoriteItem(context: Context, post: RedditChildData) {
+        post.created = System.currentTimeMillis()
         viewModelScope.launch(Dispatchers.IO) {
             RedditDatabase.getInstance(context).favoritesDao().insertAll(post)
         }

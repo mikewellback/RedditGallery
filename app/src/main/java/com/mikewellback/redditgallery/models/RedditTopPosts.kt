@@ -20,7 +20,7 @@ data class RedditChildData(
     val upvote_ratio: Float,
     val ups: Int,
     val score: Int,
-    val created: Long,
+    var created: Long,
     val selftext_html: String? = "",
     val preview: RedditImages?,
     val author: String,
