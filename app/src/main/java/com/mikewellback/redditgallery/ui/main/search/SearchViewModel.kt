@@ -1,6 +1,5 @@
 package com.mikewellback.redditgallery.ui.main.search
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -82,24 +81,24 @@ class SearchViewModel: ViewModel() {
     }
     val favorites: LiveData<List<RedditChildData>> = _favorites
 
-    fun fetchDatabaseData(context: Context) {
+    fun fetchDatabaseData() {
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().getAll().collect { favorites ->
+            RedditDatabase.getInstance().favoritesDao().getAll().collect { favorites ->
                 launch(Dispatchers.Main) { _favorites.value = favorites }
             }
         }
     }
 
-    fun addFavoriteItem(context: Context, post: RedditChildData) {
+    fun addFavoriteItem(post: RedditChildData) {
         post.created = System.currentTimeMillis()
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().insertAll(post)
+            RedditDatabase.getInstance().favoritesDao().insertAll(post)
         }
     }
 
-    fun removeFavoriteItem(context: Context, post: RedditChildData) {
+    fun removeFavoriteItem(post: RedditChildData) {
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().delete(post)
+            RedditDatabase.getInstance().favoritesDao().delete(post)
         }
     }
 }

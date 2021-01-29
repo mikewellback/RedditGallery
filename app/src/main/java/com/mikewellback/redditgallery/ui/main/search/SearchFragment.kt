@@ -31,9 +31,7 @@ class SearchFragment: Fragment() {
     ): View {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        context?.also {
-            searchViewModel.fetchDatabaseData(it)
-        }
+        searchViewModel.fetchDatabaseData()
 
         binding.postsLst.adapter = redditAdapter
         redditAdapter.onItemClickListener = { view, position ->
@@ -49,12 +47,10 @@ class SearchFragment: Fragment() {
             startActivity(intent/*, options.toBundle()*/)
         }
         redditAdapter.onFavoriteClickListener = { imageView, position, element, isFavorite ->
-            context?.also {
-                if (isFavorite) {
-                    searchViewModel.removeFavoriteItem(it, element)
-                } else {
-                    searchViewModel.addFavoriteItem(it, element)
-                }
+            if (isFavorite) {
+                searchViewModel.removeFavoriteItem(element)
+            } else {
+                searchViewModel.addFavoriteItem(element)
             }
         }
 

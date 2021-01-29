@@ -1,6 +1,5 @@
 package com.mikewellback.redditgallery.ui.main.favorites
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
@@ -25,41 +24,41 @@ class FavoritesViewModel: ViewModel() {
     }
     val removed: LiveData<List<RedditChildData>> = _removed
 
-    fun fetchDatabaseData(context: Context) {
+    fun fetchDatabaseData() {
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().getAll().collect { favorites ->
+            RedditDatabase.getInstance().favoritesDao().getAll().collect { favorites ->
                 launch(Dispatchers.Main) { _favorites.value = favorites }
             }
         }
     }
 
-    fun addFavoriteItem(context: Context, post: RedditChildData) {
+    fun addFavoriteItem(post: RedditChildData) {
         post.created = System.currentTimeMillis()
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().insertAll(post)
+            RedditDatabase.getInstance().favoritesDao().insertAll(post)
         }
     }
 
     val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
     val trashRunable = Runnable { _removed.value = listOf() }
 
-    fun removeFavoriteItem(context: Context, post: RedditChildData, undoTime: Long) {
+    fun removeFavoriteItem(post: RedditChildData, undoTime: Long) {
         if (_removed.value?.contains(post) != true) {
             _removed.value = listOf(post, *_removed.value!!.toTypedArray())
         }
         handler.removeCallbacks(trashRunable)
         handler.postDelayed(trashRunable, undoTime)
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().delete(post)
+            RedditDatabase.getInstance().favoritesDao().delete(post)
         }
     }
 
-    fun restoreRemoved(context: Context) {
+    fun restoreRemoved() {
         handler.removeCallbacks(trashRunable)
         val items = _removed.value!!.toTypedArray()
         trashRunable.run()
         viewModelScope.launch(Dispatchers.IO) {
-            RedditDatabase.getInstance(context).favoritesDao().insertAll(*items)
+            RedditDatabase.getInstance().favoritesDao().insertAll(*items)
         }
     }
 

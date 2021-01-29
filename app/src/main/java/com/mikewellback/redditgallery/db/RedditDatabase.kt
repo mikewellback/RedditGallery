@@ -16,10 +16,17 @@ abstract class RedditDatabase: RoomDatabase() {
     companion object {
         @Volatile private var instance: RedditDatabase? = null
 
-        fun getInstance(context: Context): RedditDatabase {
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+        fun initDB(context: Context) {
+            synchronized(this) {
+                buildDatabase(context).also { instance = it }
             }
+        }
+
+        fun getInstance(): RedditDatabase {
+            if (instance == null) {
+                throw InstantiationException("DB hasn't been initialized")
+            }
+            return instance!!
         }
 
         private fun buildDatabase(context: Context): RedditDatabase {

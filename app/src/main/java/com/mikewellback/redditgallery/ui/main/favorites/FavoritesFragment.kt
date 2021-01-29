@@ -30,9 +30,7 @@ class FavoritesFragment: Fragment() {
     ): View {
         val binding = FragmentFavoritesBinding.inflate(inflater, container, false)
 
-        context?.also {
-            favoritesViewModel.fetchDatabaseData(it)
-        }
+        favoritesViewModel.fetchDatabaseData()
 
         binding.postsLst.adapter = redditAdapter
         redditAdapter.showSub = true
@@ -49,12 +47,10 @@ class FavoritesFragment: Fragment() {
             startActivity(intent/*, options.toBundle()*/)
         }
         redditAdapter.onFavoriteClickListener = { imageView, position, element, isFavorite ->
-            context?.also {
-                if (isFavorite) {
-                    favoritesViewModel.removeFavoriteItem(it, element, 30_000)
-                } else {
-                    favoritesViewModel.addFavoriteItem(it, element)
-                }
+            if (isFavorite) {
+                favoritesViewModel.removeFavoriteItem(element, 30_000)
+            } else {
+                favoritesViewModel.addFavoriteItem(element)
             }
         }
 
@@ -70,14 +66,14 @@ class FavoritesFragment: Fragment() {
 
         favoritesViewModel.removed.observe(viewLifecycleOwner, { items ->
             if (items.isNotEmpty()) {
-                context?.also { ctx ->
-                    val text = ctx.resources.getQuantityString(
+                context?.also {
+                    val text = it.resources.getQuantityString(
                         R.plurals.warning_remove, items.size, items.size
                     )
                     if (snackbar == null) {
                         snackbar = Snackbar.make(binding.root, text, Snackbar.LENGTH_INDEFINITE)
                             .setAction(R.string.action_undo) {
-                                favoritesViewModel.restoreRemoved(ctx)
+                                favoritesViewModel.restoreRemoved()
                             }
                             .setAnchorView(R.id.navigation_bar)
                     } else {
