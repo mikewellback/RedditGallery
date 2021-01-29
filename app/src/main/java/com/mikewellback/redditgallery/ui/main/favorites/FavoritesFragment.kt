@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.mikewellback.redditgallery.R
 import com.mikewellback.redditgallery.databinding.FragmentFavoritesBinding
 import com.mikewellback.redditgallery.ui.adapters.RedditAdapter
 import com.mikewellback.redditgallery.ui.detail.DetailActivity
@@ -18,6 +20,8 @@ class FavoritesFragment: Fragment() {
     private val favoritesViewModel: FavoritesViewModel by viewModels()
 
     private val redditAdapter: RedditAdapter by lazy { RedditAdapter() }
+
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +51,7 @@ class FavoritesFragment: Fragment() {
         redditAdapter.onFavoriteClickListener = { imageView, position, element, isFavorite ->
             context?.also {
                 if (isFavorite) {
-                    favoritesViewModel.removeFavoriteItem(it, element)
+                    favoritesViewModel.removeFavoriteItem(it, element, 30_000)
                 } else {
                     favoritesViewModel.addFavoriteItem(it, element)
                 }
@@ -61,6 +65,30 @@ class FavoritesFragment: Fragment() {
                 binding.postsLst.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 binding.statusTxt.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
                 binding.statusImg.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            }
+        })
+
+        favoritesViewModel.removed.observe(viewLifecycleOwner, { items ->
+            if (items.isNotEmpty()) {
+                context?.also { ctx ->
+                    val text = ctx.resources.getQuantityString(
+                        R.plurals.warning_remove, items.size, items.size
+                    )
+                    if (snackbar == null) {
+                        snackbar = Snackbar.make(binding.root, text, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.action_undo) {
+                                favoritesViewModel.restoreRemoved(ctx)
+                            }
+                            .setAnchorView(R.id.navigation_bar)
+                    } else {
+                        snackbar?.setText(text)
+                    }
+                    if (snackbar?.isShown == false) {
+                        snackbar?.show()
+                    }
+                }
+            } else {
+                snackbar?.dismiss()
             }
         })
 

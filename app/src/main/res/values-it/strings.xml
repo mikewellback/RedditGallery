@@ -11,4 +11,9 @@
     <string name="status_empty">Non c\'è ancora nulla qui, ma basterà avviare una ricerca per rimediare</string>
     <string name="status_nores">La ricerca non ha prodotto risultati, continua a digitare</string>
     <string name="status_nofav">Clicca il cuore per aggiungere dei preferiti, inizia dalla pagina di ricerca</string>
+    <string name="action_undo">Annulla</string>
+    <plurals name="warning_remove">
+        <item quantity="one">%d elemento verrà rimosso</item>
+        <item quantity="other">%d elementi verranno rimossi</item>
+    </plurals>
 </resources>

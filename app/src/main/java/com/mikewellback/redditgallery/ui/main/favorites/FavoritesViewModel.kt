@@ -1,6 +1,8 @@
 package com.mikewellback.redditgallery.ui.main.favorites
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +20,11 @@ class FavoritesViewModel: ViewModel() {
     }
     val favorites: LiveData<List<RedditChildData>?> = _favorites
 
+    private val _removed = MutableLiveData<List<RedditChildData>>().apply {
+        value = listOf()
+    }
+    val removed: LiveData<List<RedditChildData>> = _removed
+
     fun fetchDatabaseData(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             RedditDatabase.getInstance(context).favoritesDao().getAll().collect { favorites ->
@@ -32,9 +39,26 @@ class FavoritesViewModel: ViewModel() {
         }
     }
 
-    fun removeFavoriteItem(context: Context, post: RedditChildData) {
+    val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
+    val trashRunable = Runnable { _removed.value = listOf() }
+
+    fun removeFavoriteItem(context: Context, post: RedditChildData, undoTime: Long) {
+        if (_removed.value?.contains(post) != true) {
+            _removed.value = listOf(post, *_removed.value!!.toTypedArray())
+        }
+        handler.removeCallbacks(trashRunable)
+        handler.postDelayed(trashRunable, undoTime)
         viewModelScope.launch(Dispatchers.IO) {
             RedditDatabase.getInstance(context).favoritesDao().delete(post)
+        }
+    }
+
+    fun restoreRemoved(context: Context) {
+        handler.removeCallbacks(trashRunable)
+        val items = _removed.value!!.toTypedArray()
+        trashRunable.run()
+        viewModelScope.launch(Dispatchers.IO) {
+            RedditDatabase.getInstance(context).favoritesDao().insertAll(*items)
         }
     }
 

@@ -11,4 +11,9 @@
     <string name="status_empty">It\'s empty here, feel free to search for something</string>
     <string name="status_nores">Your query didn\'t match any result, yet</string>
     <string name="status_nofav">Tap the heart icon to add some favorite items here, start by searching for something</string>
+    <string name="action_undo">Undo</string>
+    <plurals name="warning_remove">
+        <item quantity="one">%d element will be removed</item>
+        <item quantity="other">%d elements will be removed</item>
+    </plurals>
 </resources>
