@@ -1,6 +1,8 @@
 # RedditGallery
 A gallery of top posts from Reddit
 
+![RedditGallery logo](/app/src/main/res/mipmap-xhdpi/ic_reddit_round.png)
+
 ### Features:
 - Search while typing
 - View photos in grid and gallery modes
